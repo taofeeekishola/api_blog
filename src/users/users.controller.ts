@@ -5,6 +5,7 @@ import { GetUsersParamDto } from './dtos/get-user-params.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.services';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 
 /**
  * Class to create the routing logic for Users
@@ -68,6 +69,13 @@ export class UsersController {
         @Body() createUserDto: CreateUserDto, 
     ){
         return this.usersService.createUser(createUserDto);
+    }
+
+    @Post('create-many')
+    public createManyUsers(
+        @Body() createManyUsersDto: CreateManyUsersDto, 
+    ){
+        return this.usersService.createMany(createManyUsersDto);
     }
 
     /**

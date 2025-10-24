@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PatchPostDto } from './dto/patch-post.dto';
+import { GetPostsDto } from './dto/get-posts.dto';
 
 /**
  * Class to create the routing logic for Posts
@@ -24,8 +25,11 @@ export class PostsController {
      * @returns 
      */
     @Get('{/:userId}')
-    public getPosts(@Param('userId') userId: string){
-        return this.postService.findAll(userId);
+    public getPosts(
+        @Param('userId') userId: string, 
+        @Query() postQuery: GetPostsDto
+    ){  
+        return this.postService.findAll(postQuery ,userId);
     }
     
 
@@ -42,7 +46,7 @@ export class PostsController {
     })
     @Post()
     public createPost(@Body() createPostDto: CreatePostDto){
-        console.log(createPostDto);
+        return this.postService.create(createPostDto);
     }
 
 
@@ -59,6 +63,13 @@ export class PostsController {
     })
     @Patch()
     public updatePost(@Body() patchPostDto: PatchPostDto){
-        console.log(patchPostDto);
+        return this,this.postService.update(patchPostDto)
     }
+
+    @Delete()
+    public deletePost(@Query('id', ParseIntPipe) id:number){
+        return this.postService.delete(id)
+    }
+
+
 }

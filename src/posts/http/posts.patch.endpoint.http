@@ -2,6 +2,14 @@ PATCH http://localhost:3000/posts
 Content-Type: application/json
 
 {
-    "id":123,
-    "postType":"post"
+    "id":6,
+    "title": "Latest Spring Anime with typescript",
+    "postType":"post",
+    "status":"draft",
+    "content":"test content",
+    "metaOptions": {
+            "metaValue":"{\"sidebarEnabled\": false, \"footerActive\":true}"
+            
+        },
+    "tags": [1,3]
 }

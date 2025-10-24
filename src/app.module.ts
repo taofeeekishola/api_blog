@@ -9,25 +9,42 @@ import { User } from './users/user.entity';
 import { Post } from './posts/post.entity';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PaginationModule } from './common/pagination/pagination.module';
+import  appConfig  from './config/app.config';
+import databaseConfig from './config/database.config';
+import environmentValidation from './config/environment.validation';
+
+//gets the environemnt we are currently working with
+const ENV = process.env.NODE_ENV
 
 
 @Module({
   imports: [UsersModule, PostsModule, AuthModule, 
+  ConfigModule.forRoot({
+    isGlobal: true, //this ensures that the module is avalibale insside all the modules
+    // envFilePath: ['.env.development'],
+    // envFilePath: !ENV ? '.env': `.env.${ENV}`
+    //  envFilePath: '.env.development'
+    envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+    load: [appConfig, databaseConfig],
+    validationSchema: environmentValidation
+  }),
     TypeOrmModule.forRootAsync({
-      imports:[],
-      inject:[],
-      useFactory:() =>({
+      imports:[ConfigModule],
+      inject:[ConfigService],
+      useFactory:(configService: ConfigService) =>({
         type:'postgres',
         // entities:[User,Post],
-        autoLoadEntities: true, //AUTOLOADING ENTITIES INTO THE DATABASE
-        synchronize: true,
-        port:5432,
-        username: 'postgres',
-        password: 'hazard',
-        host:'localhost',
-        database:'nestjs-blog',
+        autoLoadEntities: configService.get('database.autoLoadEntities'), //AUTOLOADING ENTITIES INTO THE DATABASE
+        synchronize: configService.get('database.synchronize'),
+        port: configService.get('database.port'),
+        username: configService.get('database.user'),
+        password: configService.get('database.password'),
+        host:configService.get('database.host'),
+        database:configService.get('database.name'),
       })
-    }), TagsModule, MetaOptionsModule],
+    }), TagsModule, MetaOptionsModule, PaginationModule],
   controllers: [AppController],
   providers: [AppService],
 })

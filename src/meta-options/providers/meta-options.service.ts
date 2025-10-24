@@ -15,13 +15,14 @@ export class MetaOptionsService {
          * Inject metaOptionsRepository
          */
         @InjectRepository(MetaOption)
-        private metaOptionsRepository: Repository<MetaOption>
+        private readonly metaOptionsRepository: Repository<MetaOption>
     ){}
 
     public getMetaOptions(){
 
     }
 
+    //method to create a meta-options
     public async createMetaOptions(createMetaOptionsDto: CreatePostMetaOptionsDto){
         let metaOptions = this.metaOptionsRepository.create(createMetaOptionsDto);
 

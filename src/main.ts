@@ -13,6 +13,9 @@ async function bootstrap() {
       whitelist: true, //prevents values not in the dto from entering our app
       forbidNonWhitelisted: true, // throws an error if an extra value is passed from the user
       transform: true, //this transforms the incoming request to an instance of the DTO class after validation
+      transformOptions:{
+        enableImplicitConversion: true, //this implicitly converts the validation types in the dto
+      }
   })
 );
 

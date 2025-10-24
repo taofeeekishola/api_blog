@@ -1,8 +1,10 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { postType } from "./enums/postType.enum";
 import { postStatus } from "./enums/postStatus.enum";
 import { CreatePostMetaOptionsDto } from "../meta-options/dto/create-post-meta-options.dto";
 import { MetaOption } from "src/meta-options/meta-option.entity";
+import { User } from "src/users/user.entity";
+import { Tag } from "src/tags/tag.entity";
 
 /**
  * Class to create a post
@@ -69,12 +71,23 @@ export class Post{
     })
     publishOn?: Date;
 
-    @OneToOne(()=>MetaOption)
-    @JoinColumn()
-    metaOptions?: MetaOption;
+    @OneToOne(()=>MetaOption, (metaOptions) => metaOptions.post,
+    {
+        cascade:true,
+        eager: true,
+    })
+    metaOptions?: MetaOption | null;
 
-    //work on these later
-    tags?: string[];
+    @ManyToOne(() => User, (user) => user.posts, {
+        eager: true,
+    })
+    author: User;
+
+    @ManyToMany(()=> Tag, (tag)=>tag.posts,{
+        eager: true,
+    })
+    @JoinTable()
+    tags?: Tag[];
 
     
 }

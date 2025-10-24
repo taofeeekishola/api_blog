@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsEnum, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MaxLength, maxLength, MinLength, ValidateNested } from "class-validator";
+import { IsArray, IsDate, IsEnum, IsIn, IsInt, IsISO8601, IsJSON, IsNotEmpty, IsOptional, IsString, IsUrl, Matches, MaxLength, maxLength, MinLength, ValidateNested } from "class-validator";
 import { postType } from "../enums/postType.enum";
 import { postStatus } from "../enums/postStatus.enum";
 import { CreatePostMetaOptionsDto } from "../../meta-options/dto/create-post-meta-options.dto";
@@ -115,35 +115,36 @@ export class CreatePostDto{
      * validating tags property to accept an array of strings
      */
     @ApiPropertyOptional({
-        description:"Array of the tags passed as string values",
-        example:["anime","fun"]
+        description:"Array of ids of tags",
+        example:[1,2]
     })
     @IsOptional()
     @IsArray()
-    @IsString({each: true})
-    @MinLength(3,{each: true})
-    tags?: string[];
+    @IsInt({each: true})
+    tags?: number[];
 
 
     /**
      * accepts the nested dto and validates it 
      */
     @ApiPropertyOptional({
-        type:'object',
-        required:false,
-        items:{
-            type:'object',
-            properties:{
-                metaValue:{
-                    type:"json",
-                    description:"The meta value is a json string",
-                    example:'{"sidebardEnabled" true:}'
-                }
-            }
-        }
+    type: () => CreatePostMetaOptionsDto,
+    description: 'Meta options for the post',
     })
     @IsOptional()
-    @ValidateNested({each:true})
-    @Type(()=> CreatePostMetaOptionsDto)
+    @ValidateNested({ each: true })
+    @Type(() => CreatePostMetaOptionsDto)
     metaOptions?: CreatePostMetaOptionsDto | null;
+
+    /**
+     * validating autherid property
+     */
+    @ApiProperty({
+        type:'integer',
+        required: true,
+        example: 1,
+    })
+    @IsNotEmpty()
+    @IsInt()
+    authorId: number;
 }

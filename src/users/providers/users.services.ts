@@ -1,10 +1,16 @@
-import { Injectable, forwardRef, Inject } from "@nestjs/common";
+import { Injectable, forwardRef, Inject, RequestTimeoutException, BadRequestException } from "@nestjs/common";
 import { GetUsersParamDto } from "../dtos/get-user-params.dto";
 import { AuthService } from "src/auth/provider/auth.service";
-import { Repository } from "typeorm";
+import { DataSource, Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../user.entity";
 import { CreateUserDto } from "../dtos/create-user.dto";
+import { ConfigService, ConfigType } from "@nestjs/config";
+import profileConfig from "../config/profile.config";
+import { UsersCreateManyProvider } from "./users-create-many.provider";
+import { CreateManyUsersDto } from "../dtos/create-many-users.dto";
+import { CreateUserProvider } from "./create-user.provider";
+import { FindOneUserByEmailProvider } from "./find-one-user-by-email.provider";
 
 /**
  * Class to connect to Users table and perform business operations
@@ -25,6 +31,27 @@ export class UsersService{
          */
         @InjectRepository(User)
         private usersRepository:Repository<User>,
+
+        /**
+         * Injecting profileconfig
+         */
+        @Inject(profileConfig.KEY)
+        private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+
+        /**
+         * Inject usersCreateManyProvider
+         */
+        private readonly usersCreateManyProvider: UsersCreateManyProvider,
+
+        /**
+         * Inject createUserprovider
+         */
+        private readonly createuserProvider: CreateUserProvider,
+
+        /**
+         * Inject findOneUserByEmailProvider
+         */
+        private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
     ){}
 
     /**
@@ -32,18 +59,7 @@ export class UsersService{
      * @param createUserDto 
      */
     public async createUser(createUserDto:CreateUserDto){
-        //check if user already exists with the same email
-        const existingUser = await this.usersRepository.findOne({
-            where: {email: createUserDto.email},
-        });
-
-        //handle exception
-
-        //create a new user
-        let newUser = this.usersRepository.create(createUserDto);
-        newUser = await this.usersRepository.save(newUser);
-
-        return newUser;
+        return this.createuserProvider.createUser(createUserDto);
     }
 
     /**
@@ -56,9 +72,11 @@ export class UsersService{
         page: number,
     ){
 
-        const isAuth = this.authService.isAuth();
+        // const isAuth = this.authService.isAuth();
 
-        console.log(isAuth);
+        // console.log(isAuth);
+
+       console.log(this.profileConfiguration)
         return [
             {
                 firstName: "John",
@@ -76,11 +94,49 @@ export class UsersService{
      * @param id 
      * @returns 
      */
-    public findOnebyId(id:string){
-        return {
-            id: id,
-            firstName: "Ola",
-            email: 'taofeek@gamil.com',
+    public async findOnebyId(id:number){
+        let user: User | null | undefined;
+
+        try {
+            user = await this.usersRepository.findOneBy({
+            id,
+        });
+        } catch(error){
+             throw new RequestTimeoutException(
+                //can be saved in the database or logfile
+                'Unable to process your request at the moment please try later',
+                {
+                    description: 'Error connecting to the database',
+                }
+            );
         }
+
+        /**
+         * Handle the user does not exist exception
+         */
+        if(!user){
+            throw new BadRequestException("This user id does not exist")
+        }
+
+        
+        return user;
+    }
+
+    /**
+     * method to create many users
+     * @param createUsersDto 
+     * @returns 
+     */
+    public async createMany(createManyUsersDto: CreateManyUsersDto){
+       return await this.usersCreateManyProvider.createMany(createManyUsersDto);
+    }
+
+    /**
+     * proxy email to export to auth service
+     * @param email 
+     * @returns 
+     */
+    public async findOneByEmail(email: string){
+        return await this.findOneUserByEmailProvider.findOneByEmail(email)
     }
 }

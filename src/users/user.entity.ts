@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Post } from "src/posts/post.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 /**
  * Class to generate the User table in the database
@@ -37,5 +38,8 @@ export class User {
         nullable: false
     })
     password: string;
+
+    @OneToMany(() => Post, (post) => post.author)
+    posts: Post[];
 
 }

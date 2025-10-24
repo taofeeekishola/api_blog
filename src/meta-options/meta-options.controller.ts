@@ -9,7 +9,7 @@ import { CreatePostMetaOptionsDto } from './dto/create-post-meta-options.dto';
 export class MetaOptionsController {
 
     /**
-     * Inject metaoptionsService i
+     * Inject metaoptionsService 
      * @param metaOptionsService 
      */
     constructor(

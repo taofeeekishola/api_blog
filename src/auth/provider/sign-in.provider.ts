@@ -67,12 +67,11 @@ export class SignInProvider {
             {
                audience: this.jwtConfiguration.audience,
                issuer: this.jwtConfiguration.issuer,
-            //    secret: this.jwtConfiguration.secret,
-            //    expiresIn: this.jwtConfiguration.accessTokenTtl,
+               secret: this.jwtConfiguration.secret,
+               expiresIn: this.jwtConfiguration.accessTokenTtl,
             },
         
         );
-        console.log('JWT Secret:', this.jwtConfiguration.secret);
 
 
         return {

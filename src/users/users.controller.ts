@@ -67,7 +67,7 @@ export class UsersController {
      * @returns 
      */
     @Post()
-    @Auth(AuthType.None) //allowing users to access this path wihtout a token
+    @Auth(AuthType.Bearer, AuthType.None) //allowing users to access this path wihtout a token
     public createUsers(
         @Body() createUserDto: CreateUserDto, 
     ){

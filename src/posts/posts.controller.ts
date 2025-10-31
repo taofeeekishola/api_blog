@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Req } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PatchPostDto } from './dto/patch-post.dto';
 import { GetPostsDto } from './dto/get-posts.dto';
+import { REQUEST_USER_KEY } from 'src/auth/constants/auth.constants';
 
 /**
  * Class to create the routing logic for Posts
@@ -45,8 +46,9 @@ export class PostsController {
         description:'You get a 201 response if your post is created sucessfully'
     })
     @Post()
-    public createPost(@Body() createPostDto: CreatePostDto){
-        return this.postService.create(createPostDto);
+    public createPost( @Req() request /**@Body() createPostDto: CreatePostDto*/){
+        console.log(request[REQUEST_USER_KEY])
+        // return this.postService.create(createPostDto);
     }
 
 

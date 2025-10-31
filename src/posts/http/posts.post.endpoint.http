@@ -1,5 +1,5 @@
 {{
-    exports.publishOn = new Date().toISOString()
+    exports.publishOn = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
 }}
 
 POST http://localhost:3000/posts
@@ -7,14 +7,14 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoibWFya0BuZG9lcy5jb20iLCJpYXQiOjE3NjE5NDk0MTQsImV4cCI6MTc2MTk1MzAxNCwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.iXEAEMYjf5f3qtUgSI3pkXDtlfOHOwqz_Sr1pi4vLJs
 
 {
-    "title": "Latest Spring Animr",
+    "title": "Latest Spring Anime",
     "postType":"post",
-    "slug":"old-anime-way-onepunch",
+    "slug":"old-anime-way-onepunch2",
     "status":"draft",
     "content":"test content",
     "schema": "{\r\n \"@context\": \"https:\/\/schema.org\",\r\n \"@type\": \"Person\"\r\n }",
     "featuredImageUrl": "http://localhost.com/images/image1.jpg",
-    // "publishOn": "{{publishOn}}",
+    "publishOn": "{{publishOn}}",
     // "tags": ["anime","fun"],
     "metaOptions": {
             "metaValue":"{\"sidebarEnabled\": false, \"footerActive\":true}"

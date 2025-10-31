@@ -106,8 +106,10 @@ export class CreatePostDto{
         description:"The date the blog post was posted",
         example: "2024-03-16T07:46:32+0000"
     })
-    @IsISO8601()
+    // @IsISO8601()
+    @IsDate()
     @IsOptional()
+    @Type(() => Date)
     publishOn?: Date;
 
 

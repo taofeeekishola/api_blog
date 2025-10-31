@@ -5,6 +5,8 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PatchPostDto } from './dto/patch-post.dto';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { REQUEST_USER_KEY } from 'src/auth/constants/auth.constants';
+import { ActiveUser } from 'src/auth/decorator/active-user.decorator';
+import { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
 
 /**
  * Class to create the routing logic for Posts
@@ -46,9 +48,12 @@ export class PostsController {
         description:'You get a 201 response if your post is created sucessfully'
     })
     @Post()
-    public createPost( @Req() request /**@Body() createPostDto: CreatePostDto*/){
-        console.log(request[REQUEST_USER_KEY])
-        // return this.postService.create(createPostDto);
+    public createPost(
+        @Body() createPostDto: CreatePostDto, 
+        @ActiveUser() user: ActiveUserData
+    ){
+        // console.log(user)
+        return this.postService.create(createPostDto, user);
     }
 
 

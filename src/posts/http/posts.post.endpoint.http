@@ -1,22 +1,25 @@
+{{
+    exports.publishOn = new Date().toISOString()
+}}
+
 POST http://localhost:3000/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoibWFya0BuZG9lcy5jb20iLCJpYXQiOjE3NjE5NDQxMDcsImV4cCI6MTc2MTk0NzcwNywiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.s_RIL9zLp48fe9Acpof3pC4tdSF1TulRxaJ1cNH3bCg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoibWFya0BuZG9lcy5jb20iLCJpYXQiOjE3NjE5NDk0MTQsImV4cCI6MTc2MTk1MzAxNCwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.iXEAEMYjf5f3qtUgSI3pkXDtlfOHOwqz_Sr1pi4vLJs
 
 {
     "title": "Latest Spring Animr",
     "postType":"post",
-    "slug":"old-anime-way-way",
+    "slug":"old-anime-way-onepunch",
     "status":"draft",
     "content":"test content",
     "schema": "{\r\n \"@context\": \"https:\/\/schema.org\",\r\n \"@type\": \"Person\"\r\n }",
     "featuredImageUrl": "http://localhost.com/images/image1.jpg",
-    "publishOn": "2024-03-16T07:46:32+0000",
+    // "publishOn": "{{publishOn}}",
     // "tags": ["anime","fun"],
     "metaOptions": {
             "metaValue":"{\"sidebarEnabled\": false, \"footerActive\":true}"
             
         },
-    "authorId":3,
-    "tags": [1,2]
+    "tags": [1]
 
 }

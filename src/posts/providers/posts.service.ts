@@ -12,6 +12,8 @@ import { Tag } from 'src/tags/tag.entity';
 import { GetPostsDto } from '../dto/get-posts.dto';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import { Paginated } from 'src/common/pagination/interfaces/paginated.interfaces';
+import { CreatePostProvider } from './create-post.provider';
+import { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
 
 /**
  * Class to connect Post table and perform business logic
@@ -24,6 +26,9 @@ export class PostsService {
      * @param usersService 
      */
     constructor(
+        /**
+         * inject userService
+         */
         private readonly usersService: UsersService,
 
         /**
@@ -48,29 +53,19 @@ export class PostsService {
          * Injecting paginationProvider
          */
         private readonly paginationProvider: PaginationProvider,
+
+        /**
+         * inject createPostPorvider
+         */
+        private readonly createPostPorvider: CreatePostProvider
     ){}
 
 
     /**
      * Creatinng new posts
      */
-    public async create(@Body() createPostDto: CreatePostDto){
-
-        //find author from database based on the authorId
-        let author =  await this.usersService.findOnebyId(createPostDto.authorId);
-
-        //find tags
-        let tags = await this.tagsService.findMultipleTags(createPostDto.tags ?? [])
-
-        //create post
-        let post =  this.postsRepository.create({
-            ...createPostDto, 
-            author: author as User,
-            tags: tags,
-        });
-
-        //return the post
-        return await this.postsRepository.save(post)
+    public async create(createPostDto: CreatePostDto, user: ActiveUserData){
+        return await this.createPostPorvider.create(createPostDto, user);
     }
 
 

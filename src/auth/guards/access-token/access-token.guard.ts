@@ -11,6 +11,7 @@ import { REQUEST_USER_KEY } from 'src/auth/constants/auth.constants';
  */
 @Injectable()
 export class AccessTokenGuard implements CanActivate {
+ 
   constructor(
     /**
      * inject jwtService
@@ -46,7 +47,6 @@ export class AccessTokenGuard implements CanActivate {
 
       //adding the payload to the request body to use the id and email to get the user from the database with each request
       request [REQUEST_USER_KEY] = payload;
-      console.log(payload);
     } catch{
       throw new UnauthorizedException();
     }
@@ -63,7 +63,6 @@ export class AccessTokenGuard implements CanActivate {
     //destructuring to extract the token
     //using the empty space between beaer and token to extract the token
     const [_, token] = request.headers.authorization?.split(' ') ?? [];
-
     return token;
   }
 }

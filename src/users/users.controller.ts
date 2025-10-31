@@ -6,7 +6,8 @@ import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/users.services';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { CreateManyUsersDto } from './dtos/create-many-users.dto';
-import { AccessTokenGuard } from 'src/auth/guards/access-token/access-token.guard';
+import { Auth } from 'src/auth/decorator/auth.decorator';
+import { AuthType } from 'src/auth/enums/auth-type.enum';
 
 /**
  * Class to create the routing logic for Users
@@ -66,13 +67,13 @@ export class UsersController {
      * @returns 
      */
     @Post()
+    @Auth(AuthType.None) //allowing users to access this path wihtout a token
     public createUsers(
         @Body() createUserDto: CreateUserDto, 
     ){
         return this.usersService.createUser(createUserDto);
     }
 
-    @UseGuards(AccessTokenGuard)
     @Post('create-many')
     public createManyUsers(
         @Body() createManyUsersDto: CreateManyUsersDto, 

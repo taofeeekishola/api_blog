@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import jwtConfig from './config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
 import { GenerateTokensProvider } from './provider/generate-tokens.provider';
+import { RefreshTokensProvider } from './provider/refresh-tokens.provider';
 
 
 @Module({
@@ -18,7 +19,7 @@ import { GenerateTokensProvider } from './provider/generate-tokens.provider';
     {
     provide: HashingProvider,
     useClass: BcryptProvider,
-  }, SignInProvider, GenerateTokensProvider],
+  }, SignInProvider, GenerateTokensProvider, RefreshTokensProvider],
   imports: [
     forwardRef(()=> UsersModule), //circular dependecy
     ConfigModule.forFeature(jwtConfig), 

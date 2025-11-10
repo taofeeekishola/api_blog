@@ -12,7 +12,7 @@ export class AuthenticationGuard implements CanActivate {
   private static readonly defaultAuthType = AuthType.Bearer;
 
   //getting the map of all authentication types
-  //asigning a guard to all the authentication type
+  //assigning a guard to all the authentication type
   private readonly authTypeGuardMap : Record< AuthType, CanActivate | CanActivate[]>
 
   constructor(

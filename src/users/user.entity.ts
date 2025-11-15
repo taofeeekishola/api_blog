@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Post } from "src/posts/post.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -37,12 +38,14 @@ export class User {
         length: 96,
         nullable: true
     })
+    @Exclude() //this prevents the password from getting sent back with the resposne
     password?: string;
 
      @Column({
         type: 'varchar',
         nullable: true
     })
+    @Exclude() 
     googleId?: string;
 
     @OneToMany(() => Post, (post) => post.author)

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Put, Delete, Param, Query, Body, Req, Headers, Ip, ParseIntPipe, DefaultValuePipe, ValidationPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Put, Delete, Param, Query, Body, Req, Headers, Ip, ParseIntPipe, DefaultValuePipe, ValidationPipe, UseGuards, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-user-params.dto';
@@ -67,7 +67,8 @@ export class UsersController {
      * @returns 
      */
     @Post()
-    @Auth(AuthType.Bearer, AuthType.None) //allowing users to access this path wihtout a token
+    @Auth(AuthType.None) //allowing users to access this path wihtout a token
+    @UseInterceptors(ClassSerializerInterceptor)
     public createUsers(
         @Body() createUserDto: CreateUserDto, 
     ){

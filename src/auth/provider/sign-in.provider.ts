@@ -30,13 +30,20 @@ export class SignInProvider {
         //throw an exception if user not found
         let user = await this.userService.findOneByEmail(signInDto.email);
 
+        // Ensure password exists
+        if (!user.password) {
+            throw new UnauthorizedException(
+                "This account does not have a password. Use Google login."
+            );
+        }
+        
         //compare password to hash
         let isEqual:boolean = false;
 
         try{
             isEqual = await this.hashingProvider.comparePassword(
                 signInDto.password,
-                user.password!
+                user.password
             )
         } catch(error){
             throw new RequestTimeoutException(error, {

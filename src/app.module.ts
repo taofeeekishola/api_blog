@@ -20,6 +20,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
 import { AuthenticationGuard } from './auth/guards/authentication/authentication.guard';
 import { DataResponseInterceptor } from './common/interceptors/data-response/data-response.interceptor';
+import { MailModule } from './mail/mail.module';
 
 //gets the environemnt we are currently working with
 const ENV = process.env.NODE_ENV
@@ -55,7 +56,7 @@ const ENV = process.env.NODE_ENV
     JwtModule.registerAsync(jwtConfig.asProvider()), //ensures the jwt is injected into the application successfully
     TagsModule, 
     MetaOptionsModule, 
-    PaginationModule],
+    PaginationModule, MailModule],
   controllers: [AppController],
   providers: [
     AppService,

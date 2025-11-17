@@ -2,6 +2,9 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/users/user.entity';
 
+/**
+ * class to send welcome email to users
+ */
 @Injectable()
 export class MailService {
     constructor(
@@ -11,6 +14,10 @@ export class MailService {
         private readonly mailerService: MailerService,
     ){}
 
+    /**
+     * this is the method that sends the email to users
+     * @param user 
+     */
     public async senduserWelcome(user: User): Promise<void>{
         await this.mailerService.sendMail({
             to: user.email,

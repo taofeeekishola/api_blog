@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { HashingProvider } from 'src/auth/provider/hashing.provider';
 import { InjectRepository } from '@nestjs/typeorm';
+import { MailService } from 'src/mail/providers/mail.service';
 
 @Injectable()
 export class CreateUserProvider {
@@ -20,6 +21,11 @@ export class CreateUserProvider {
          */
         @Inject(forwardRef(() => HashingProvider)) //how to inject in circular dependency
         private readonly hashingprovider: HashingProvider,
+
+        /**
+         * inject mailService
+         */
+        private readonly mailService: MailService,
 
     ){}
 
@@ -70,7 +76,12 @@ export class CreateUserProvider {
                 }
             );
         }
-        
+
+        try{
+            await this.mailService.senduserWelcome(newUser);
+        } catch(error){
+            throw new RequestTimeoutException(error);
+        }
 
         return newUser;
     }

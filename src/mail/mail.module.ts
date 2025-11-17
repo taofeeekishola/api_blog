@@ -5,7 +5,7 @@ import { MailService } from './providers/mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import {EjsAdapter} from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
-import { strict } from 'assert';
+
 
 
 @Global() //allows it to be imported to any module in the application

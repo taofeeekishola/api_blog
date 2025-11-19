@@ -18,6 +18,12 @@ const createMockRepository = <T extends ObjectLiteral = any>(): MockRepository<T
 describe('CreateUserProvider', () => {
     let provider: CreateUserProvider;
     let usersRepsitory: MockRepository;
+    const user = {
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@doe",
+        password: "password"
+    }
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -25,8 +31,14 @@ describe('CreateUserProvider', () => {
                 CreateUserProvider,
                 {provide: DataSource, useValue: {}},   
                 {provide: getRepositoryToken(User), useValue: createMockRepository()},   
-                {provide: MailService, useValue: {}},   
-                {provide: HashingProvider, useValue: {}},
+                {
+                    provide: MailService, 
+                    useValue: {sendUserWelcome: jest.fn(()=> Promise.resolve())}
+                },   
+                {
+                    provide: HashingProvider, 
+                    useValue: {hashPassword: jest.fn(() => user.password)}
+                },
             ],
         }).compile();
 

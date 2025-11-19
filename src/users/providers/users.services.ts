@@ -21,23 +21,12 @@ export class UsersService{
 
     
     constructor(
-        /**
-        * Injecting the Auth service into the User service
-        */
-        @Inject(forwardRef(()=> AuthService))
-        private readonly authService: AuthService,
 
         /**
          * Injecting usersRepository
          */
         @InjectRepository(User)
         private usersRepository:Repository<User>,
-
-        /**
-         * Injecting profileconfig
-         */
-        @Inject(profileConfig.KEY)
-        private readonly profileConfiguration: ConfigType<typeof profileConfig>,
 
         /**
          * Inject usersCreateManyProvider
@@ -82,17 +71,17 @@ export class UsersService{
 
         // console.log(isAuth);
 
-       console.log(this.profileConfiguration)
-        return [
-            {
-                firstName: "John",
-                email: 'jogn@gamil.com',
-            },
-             {
-                firstName: "Taofeek",
-                email: 'taofeek@gamil.com',
-            }
-        ]
+    //    console.log(this.profileConfiguration)
+    //     return [
+    //         {
+    //             firstName: "John",
+    //             email: 'jogn@gamil.com',
+    //         },
+    //          {
+    //             firstName: "Taofeek",
+    //             email: 'taofeek@gamil.com',
+    //         }
+    //     ]
     }
 
     /**

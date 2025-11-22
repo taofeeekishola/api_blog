@@ -37,19 +37,51 @@ describe('[Users] @Post Endpoints', () => {
   });
 
   it('/users - firstname is mandatory', ()=>{
-    return request(httpServer).post('/users').send(missingFirstName).expect(400);
+    return request(httpServer).post('/users').send(missingFirstName()).expect(400);
   });
 
   it('/users - email is mandatory', ()=>{
-    return request(httpServer).post('/users').send(missingEmail).expect(400);
+    return request(httpServer).post('/users').send(missingEmail()).expect(400);
   });
 
   it('/users - password is mandatory', ()=>{
-    return request(httpServer).post('/users').send(missingPassword).expect(400);
+    return request(httpServer).post('/users').send(missingPassword()).expect(400);
   });
 
-  it.todo('/users - Valid request sucessfully creates user');
-  it.todo('/users - password is not returned in response');
-  it.todo('/users - googleId is not returned in response');
+  it('/users - Valid request sucessfully creates user', ()=>{
+    const user = completeUser();
+    return request(httpServer)
+    .post('/users')
+    .send(user)
+    .expect(201)
+    .then(({body})=>{
+        expect(body.data).toBeDefined();
+        expect(body.data.firstName).toBe(user.firstName);
+        expect(body.data.lastName).toBe(user.lastName);
+        expect(body.data.email).toBe(user.email);
+    });
+  });
+
+  it('/users - password is not returned in response', ()=>{
+    return request(httpServer)
+    .post('/users')
+    .send(completeUser())
+    .expect(201)
+    .then(({body})=>{
+        expect(body.data).toBeDefined();
+        expect(body.data.password).toBeUndefined();
+    });
+  });
+
+  it('/users - googleId is not returned in response', ()=>{
+    return request(httpServer)
+    .post('/users')
+    .send(completeUser())
+    .expect(201)
+    .then(({body})=>{
+        expect(body.data).toBeDefined();
+        expect(body.data.googleId).toBeUndefined();
+    });
+  });
 
 });

@@ -1,26 +1,26 @@
-import { faker} from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
-export const completeUser = {
+export const completeUser = () => ({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
-    password: "Passwod123!"
-}
+    password: "Password123!"
+});
 
-export const missingFirstName = {
+export const missingFirstName = () => ({
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
-    password: "Passwod123!"
-}
+    password: "Password123!"
+});
 
-export const missingEmail = {
+export const missingEmail = () => ({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
-    password: "Passwod123!"
-}
+    password: "Password123!"
+});
 
-export const missingPassword = {
+export const missingPassword = () => ({
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
-}
+});

@@ -5,10 +5,13 @@ import { appCreate } from "src/app.create";
 import { AppModule } from "src/app.module";
 
 export async function bootstarpNestApplication():Promise<INestApplication>{
+    
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
         imports: [AppModule, ConfigModule],
         providers: [ConfigService],
-    }).compile();
+    })
+    .compile();
 
     const app = moduleFixture.createNestApplication();
     appCreate(app); //adding the middleware
